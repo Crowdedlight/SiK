@@ -77,7 +77,7 @@ extern void    DMA_ISR(void)    __interrupt(INTERRUPT_DMA0);
 
 //@}
 
-__code const char g_banner_string[] = "RFD SiK " stringify(APP_VERSION_HIGH) "." stringify(APP_VERSION_LOW) " on " BOARD_NAME;
+__code const char g_banner_string[] = "SiK " stringify(APP_VERSION_HIGH) "." stringify(APP_VERSION_LOW) " on " BOARD_NAME;
 __code const char g_version_string[] = stringify(APP_VERSION_HIGH) "." stringify(APP_VERSION_LOW);
 
 __pdata enum BoardFrequency	g_board_frequency;	///< board info from the bootloader
@@ -368,9 +368,10 @@ radio_init(void)
 		break;
 	}
 
-	if (freq_max == freq_min) {
-		freq_max = freq_min + 1000000UL;
-	}
+	//TODO uncommented as doesn't matter when we hardcode freq lower down
+//	if (freq_max == freq_min) {
+//		freq_max = freq_min + 1000000UL;
+//	}
 
 	// get the duty cycle we will use
 	duty_cycle = param_get(PARAM_DUTY_CYCLE);
@@ -385,24 +386,34 @@ radio_init(void)
 	}
 	param_set(PARAM_LBT_RSSI, lbt_rssi);
 
+	//TODO HACK to use approved danish frequencies
+    num_fh_channels = 9; //apparently we are zero-indexed as we use modulus to select channels. this gives 10 channels with correct max freq
+    freq_min = 433575000UL;
+    freq_max = 434025000UL;
+
 	// sanity checks
 	param_set(PARAM_MIN_FREQ, freq_min/1000);
 	param_set(PARAM_MAX_FREQ, freq_max/1000);
 	param_set(PARAM_NUM_CHANNELS, num_fh_channels);
 
-	channel_spacing = (freq_max - freq_min) / (num_fh_channels+2);
+	//channel_spacing = (freq_max - freq_min) / (num_fh_channels+2);
+    //TODO channel spacing fixed to our approved spacing.
+    // Removed initial channel spacing as we are now operating on specefic frequencies
+    channel_spacing = 50000UL; //spacing of 0.050 MHz
 
 	// add half of the channel spacing, to ensure that we are well
 	// away from the edges of the allowed range
-	freq_min += channel_spacing/2;
+	//freq_min += channel_spacing/2; //TODO commented out as we start on specific frequency
 
 	// add another offset based on network ID. This means that
 	// with different network IDs we will have much lower
 	// interference
-	srand(param_get(PARAM_NETID));
-	if (num_fh_channels > 5) {
-		freq_min += ((unsigned long)(rand()*625)) % channel_spacing;
-	}
+	//TODO removed. Want to start at specefic frequency, so no offset
+//	srand(param_get(PARAM_NETID));
+//	if (num_fh_channels > 5) {
+//		freq_min += ((unsigned long)(rand()*625)) % channel_spacing;
+//	}
+
 	debug("freq low=%lu high=%lu spacing=%lu\n", 
 	       freq_min, freq_min+(num_fh_channels*channel_spacing), 
 	       channel_spacing);

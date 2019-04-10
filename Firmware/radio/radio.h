@@ -35,6 +35,11 @@
 #ifndef _RADIO_H_
 #define _RADIO_H_
 
+//TODO inlcuded based on an issue of ECC not working unless we do this. Could create crosstalk on netIDs if not included
+#ifndef INCLUDE_AES
+#define INCLUDE_GOLAY
+#endif
+
 /// @page hardware Notes on Hardware Allocation
 ///
 /// @section timers Timer Allocation
