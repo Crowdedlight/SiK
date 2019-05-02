@@ -407,7 +407,7 @@ link_update(void)
 	}
 
 	if (unlock_count != 0) {
-		statistics.average_rssi = (radio_last_rssi() + 3*(uint16_t)statistics.average_rssi)/4;
+		statistics.average_rssi = radio_last_rssi(); // + 3*(uint16_t)statistics.average_rssi)/4;
 
 		// reset statistics when unlocked
 		statistics.receive_count = 0;
