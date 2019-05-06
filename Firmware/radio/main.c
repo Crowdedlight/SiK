@@ -340,7 +340,7 @@ radio_init(void)
 	param_set(PARAM_LBT_RSSI, lbt_rssi);
 
     //TODO HACK to use approved danish frequencies
-    num_fh_channels = 9; //apparently we are zero-indexed as we use modulus to select channels. this gives 10 channels with correct max freq
+    num_fh_channels = 10; //apparently we are zero-indexed as we use modulus to select channels. this gives 10 channels with correct max freq
     freq_min = 433575000UL;
     freq_max = 434025000UL;
 
@@ -379,10 +379,11 @@ radio_init(void)
 	// start on a channel chosen by network ID
 	radio_set_channel(param_get(PARAM_NETID) % num_fh_channels);
 
+    //TODO Hardcoded air speed to 64 to match setting for diviation for legal bandwidth
 	// And intilise the radio with them.
-	if (!radio_configure(param_get(PARAM_AIR_SPEED)) &&
-	    !radio_configure(param_get(PARAM_AIR_SPEED)) &&
-	    !radio_configure(param_get(PARAM_AIR_SPEED))) {
+	if (!radio_configure(64) &&
+	    !radio_configure(64) &&
+	    !radio_configure(64) {
 		panic("radio_configure failed");
 	}
 
