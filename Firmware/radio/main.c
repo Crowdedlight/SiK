@@ -381,9 +381,9 @@ radio_init(void)
 
     //TODO Hardcoded air speed to 64 to match setting for diviation for legal bandwidth
 	// And intilise the radio with them.
-	if (!radio_configure(64) &&
-	    !radio_configure(64) &&
-	    !radio_configure(64) {
+	if (!radio_configure(24) &&
+	    !radio_configure(24) &&
+	    !radio_configure(24)) {
 		panic("radio_configure failed");
 	}
 
