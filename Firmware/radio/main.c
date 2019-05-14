@@ -387,7 +387,7 @@ radio_init(void)
 	param_set(PARAM_LBT_RSSI, lbt_rssi);
 
 	//TODO HACK to use approved danish frequencies
-    num_fh_channels = 9; //apparently we are zero-indexed as we use modulus to select channels. this gives 10 channels with correct max freq
+    num_fh_channels = 10; //apparently we are zero-indexed as we use modulus to select channels. this gives 10 channels with correct max freq
     freq_min = 433575000UL;
     freq_max = 434025000UL;
 
