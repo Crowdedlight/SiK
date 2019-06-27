@@ -558,7 +558,7 @@ tdm_serial_loop(void)
       fhop_set_locked(true);
       
       // update filtered RSSI value and packet stats
-      statistics.average_rssi = (radio_last_rssi() + 7*(uint16_t)statistics.average_rssi)/8;
+      statistics.average_rssi = radio_last_rssi(); //(radio_last_rssi() + 7*(uint16_t)statistics.average_rssi)/8;
       statistics.receive_count++;
       
       // we're not waiting for a preamble
